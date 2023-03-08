@@ -1,0 +1,23 @@
+{
+  "name": "nodejs_we17303",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Minh452003/NodeJs_WE17303.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Minh452003/NodeJs_WE17303/issues"
+  },
+  "homepage": "https://github.com/Minh452003/NodeJs_WE17303#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
