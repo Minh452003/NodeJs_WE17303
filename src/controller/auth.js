@@ -1,6 +1,7 @@
 import User from "../model/user";
-import { userSchema } from "../schemas/auth";
-import bcrypt from "bcrypt";
+import { userSchema, signInSchema } from "../schemas/auth";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 export const signUp = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -35,4 +36,36 @@ export const signUp = async (req, res) => {
             message: error,
         })
     }
-}
+};
+
+export const signIn = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const { error } = signInSchema.validate(req.body, { abortEarly: false });
+        if (error) {
+            const errors = error.details.map((err) => err.message);
+            return res.status(400).json({
+                message: errors
+            });
+        }
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({
+                message: "Tài khoản không tồn tại!",
+            })
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({
+                message: "Mật khẩu không khớp"
+            });
+        }
+        const token = jwt.sign({ id: user._id }, "minh", { expiresIn: "1d" });
+        return res.status(200).json({
+            message: "Đăng nhập thành công",
+            accessToken: token,
+            user,
+        })
+    } catch (error) {
+    }
+};

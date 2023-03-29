@@ -20,4 +20,17 @@ export const userSchema = Joi.object({
         "string.empty": "Confirm không được để trống",
         "any.required": "Trường confirm là bắt buộc",
     })
+});
+
+export const signInSchema = Joi.object({
+    email: Joi.string().email().required().messages({
+        "string.empty": "Email không được bỏ trống",
+        "string.email": "Email phải đúng định dạng",
+        "any.required": "Email là trường bắt buộc"
+    }),
+    password: Joi.string().min(6).required().messages({
+        "string.empty": "Mật khẩu không được bỏ trống",
+        "string.min": "Password phải chứa ít nhất {#limit} ký tự",
+        "any.required": "Mật khẩu là trường bắt buộc"
+    })
 })
