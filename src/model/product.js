@@ -1,5 +1,6 @@
 import { string } from "joi";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const productsSchema = mongoose.Schema({
     name: {
@@ -7,5 +8,10 @@ const productsSchema = mongoose.Schema({
         require: true,
     },
     price: Number,
-});
+    categoryId: {
+        type: mongoose.Types.ObjectId,
+        ref: "Category",
+    }
+}, { timestamps: true, versionKey: false });
+productsSchema.plugin(mongoosePaginate);
 export default mongoose.model("Product", productsSchema);

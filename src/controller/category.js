@@ -1,24 +1,10 @@
 import Product from "../model/product";
-import Joi from "joi";
-import Category from "../model/category"
-
-const productSchema = Joi.object({
-    name: Joi.string().required(),
-    price: Joi.number().required(),
-    categoryId: Joi.string().required(),
-})
+import Category from "../model/category";
+import { CategorySchema } from "../schemas/category"
 
 export const getAll = async (req, res) => {
-    const { _limit = 10, _sort = "createAt", _order = "asc", _page = 1 } = req.query;
-    const options = {
-        page: _page,
-        limit: _limit,
-        sort: {
-            [_sort]: _order == "desc" ? -1 : 1,
-        },
-    };
     try {
-        const data = await Product.paginate({}, options);
+        const data = await Category.find().populate("products");
         return res.status(200).json(data);
     } catch (error) {
         return res.status(400).json({
@@ -30,13 +16,14 @@ export const getAll = async (req, res) => {
 export const get = async (req, res) => {
     try {
         const id = req.params.id;
-        const data = await Product.findById(id).populate("categoryId", "-__v");
+        const data = await Category.findById(id).populate("products");
         if (data === 0) {
             return res.status(400).json({
                 message: "Hiện sản phẩm thất bại",
             })
         }
-        return res.status(200).json(data);
+        const products = await Product.find({ categoryId: id });
+        return res.status(200).json(products);
     } catch (error) {
         return res.status(400).json({
             message: error,
@@ -47,19 +34,13 @@ export const get = async (req, res) => {
 export const create = async (req, res) => {
     try {
         const body = req.body;
-        const { error } = productSchema.validate(body);
+        const { error } = CategorySchema.validate(body);
         if (error) {
             return res.status(200).json({
                 message: error.details[0].message,
             })
         }
-        const data = await Product.create(body);
-
-        await Category.findByIdAndUpdate(data.categoryId, {
-            $addToSet: {
-                products: data._id,
-            },
-        });
+        const data = await Category.create(body);
         if (data.length === 0) {
             return res.status(400).json({
                 message: "Thêm sản phẩm thất bại"
@@ -79,7 +60,7 @@ export const create = async (req, res) => {
 export const remove = async (req, res) => {
     try {
         const id = req.params.id;
-        const data = await Product.findByIdAndDelete(id);
+        const data = await Category.findByIdAndDelete(id);
         return res.status(200).json({
             message: "Xoá sản phẩm thành công",
         })
@@ -94,13 +75,13 @@ export const update = async (req, res) => {
     try {
         const id = req.params.id;
         const body = req.body;
-        const { error } = productSchema.validate(body);
+        const { error } = CategorySchema.validate(body);
         if (error) {
             return res.status(400).json({
                 message: error.details[0].message,
             })
         }
-        const data = await Product.findByIdAndUpdate({ _id: id }, body, {
+        const data = await Category.findByIdAndUpdate({ _id: id }, body, {
             new: true,
         });
         if (data.length === 0) {
