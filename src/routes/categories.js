@@ -1,6 +1,6 @@
 import express from "express";
-import { getAll, get, create, remove, update } from "../controller/category";
-import { checkPermission } from "../middlewares/checkPermission";
+import { getAll, get, create, remove, update } from "../controller/category.js";
+import { checkPermission } from "../middlewares/checkPermission.js";
 
 const routerCategory = express.Router();
 

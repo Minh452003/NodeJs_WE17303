@@ -1,6 +1,6 @@
-import Product from "../model/product";
+import Product from "../model/product.js";
 import Joi from "joi";
-import Category from "../model/category"
+import Category from "../model/category.js"
 
 const productSchema = Joi.object({
     id: Joi.string(),
