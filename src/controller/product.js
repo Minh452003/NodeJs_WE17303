@@ -3,8 +3,11 @@ import Joi from "joi";
 import Category from "../model/category"
 
 const productSchema = Joi.object({
+    id: Joi.string(),
     name: Joi.string().required(),
     price: Joi.number().required(),
+    image: Joi.string().required(),
+    description: Joi.string(),
     categoryId: Joi.string().required(),
 })
 

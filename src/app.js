@@ -10,6 +10,6 @@ app.use(cors());
 app.use("/api", router);
 app.use("/api", routerUser);
 app.use("/api", routerCategory);
-mongoose.connect("mongodb://127.0.0.1:27017/onluyen1");
+mongoose.connect("mongodb://127.0.0.1:27017/Ass_Type");
 
 export const viteNodeApp = app;
