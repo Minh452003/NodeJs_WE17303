@@ -4,9 +4,12 @@
   "description": "",
   "main": "app.js",
   "type": "module",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
-    "dev": "vite",
-    "start": "nodemon src/app.js"
+    "build": "vite build",
+    "start": "nodemon src/index.js"
   },
   "repository": {
     "type": "git",
