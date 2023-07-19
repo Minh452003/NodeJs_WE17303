@@ -15,7 +15,7 @@ app.use("/api", routerUser);
 app.use("/api", routerCategory);
 
 app.listen(8080, async () => {
-    await mongoose.connect(process.env.URL_MONGO);
+    await mongoose.connect(process.env.URL_MONGO, { useNewUrlParser: true, useUnifiedTopology: true });
     console.log("Server is running 8080");
 });
 
